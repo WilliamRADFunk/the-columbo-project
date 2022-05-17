@@ -11,7 +11,7 @@ param(
 $suspects = @(
     [PSCustomObject]@{
         Name="msportalfx-mock";
-        Url="https://github.com/WilliamRADFunk/msportalfx-mock.git";
+        Url="https://github.com/Azure/msportalfx-mock.git";
     }
 );
 
