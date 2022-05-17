@@ -3,19 +3,19 @@ param(
         Mandatory=$true,
         HelpMessage="Full path to root of the enlistment to analyze"
     )]
-    [string]$pathToRoot,
+    [string]$PathToRoot,
     [ValidateSet("csv", "json", IgnoreCase = $true)]
     [Parameter(
         Mandatory=$false,
         HelpMessage="The type of file to write the output into (*.csv, *.json)",
         ParameterSetName="csv"
     )]
-    [string]$outputType,
+    [string]$OutputType,
     [Parameter(
         Mandatory=$false,
         HelpMessage="The name of the file to write the output into"
     )]
-    [string]$outputFileName
+    [string]$OutputFileName
 )
 
 #
@@ -73,7 +73,7 @@ Function Get-Weights {
 
 
 $startingDir = Get-Location;
-Set-Location $pathToRoot;
+Set-Location $PathToRoot;
 
 #
 # Cycling through all files in the enlistment from the provided root directory.
@@ -100,8 +100,8 @@ $rootDirsFiltered | ForEach-Object {
 # Reformatting the data for export to different file types.
 #
 
-if ([string]::IsNullOrEmpty($outputFileName) -eq $True) {
-    $outputFileName = "WhoDoneIt";
+if ([string]::IsNullOrEmpty($OutputFileName) -eq $True) {
+    $OutputFileName = "WhoDoneIt";
 }
 
 $entryList = @();
@@ -124,17 +124,17 @@ foreach ($kvp1 in $blame.GetEnumerator()) {
             Write-Output $entry;
             $entryList += $entry;
 
-            if ($outputType -eq "csv") {
-                $entry | Export-CSV "$($startingDir)\$($outputFileName).csv" -Append -NoTypeInformation -Force;
+            if ($OutputType -eq "csv") {
+                $entry | Export-CSV "$($startingDir)\$($OutputFileName).csv" -Append -NoTypeInformation -Force;
             }
         }
         Write-Host " ";
     }
 }
 
-if ($outputType -eq "json") {
+if ($OutputType -eq "json") {
     $jsonified = ConvertTo-Json -InputObject $entryList -Depth 100;
-    $jsonified | Out-File "$($startingDir)\$($outputFileName).json";
+    $jsonified | Out-File "$($startingDir)\$($OutputFileName).json";
 }
 
 Set-Location $startingDir;
