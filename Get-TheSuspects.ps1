@@ -26,17 +26,16 @@ foreach($suspect in $suspects) {
     git clone $($suspect.Url);
 }
 
-
 # Creates the suspects folder if it doesn't already exist.
 Write-Host "Preparing for the suspect line up." -ForegroundColor "Green";
-$PathTest = Test-Path -Path "$($startingDir)\suspects";
+$FolderName = "$($startingDir)\suspects";
+$PathTest = Test-Path -Path $FolderName;
 if ($PathTest) {
     # Suspects folder already exists.
 } else {
     New-Item $FolderName -ItemType Directory
 }
 Write-Host "Suspect line up is prepared." -ForegroundColor "Green";
-
 
 # Analyzes each repository for code ownership file by file and then puts results in a separate json file.
 foreach($suspect in $suspects) {
@@ -46,7 +45,6 @@ foreach($suspect in $suspects) {
 
     .\Get-TheClues.ps1 -PathToRoot ".\$($suspect.Name)" -OutputType "json" -OutputFileName "suspects\$($suspect.Name)";
 }
-
 
 # Delete all the cloned repositories.
 foreach($suspect in $suspects) {

@@ -70,8 +70,6 @@ Function Get-Weights {
     return $blameInstance;
 }
 
-
-
 $startingDir = Get-Location;
 Set-Location $PathToRoot;
 
